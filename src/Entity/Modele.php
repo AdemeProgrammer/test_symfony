@@ -27,9 +27,16 @@ class Modele
     #[ORM\OneToMany(targetEntity: Avion::class, mappedBy: 'refModele')]
     private Collection $refAvions;
 
+    /**
+     * @var Collection<int, Utilisateur>
+     */
+    #[ORM\OneToMany(targetEntity: Utilisateur::class, mappedBy: 'refModele')]
+    private Collection $refUtilisateurs;
+
     public function __construct()
     {
         $this->refAvions = new ArrayCollection();
+        $this->refUtilisateurs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -79,12 +86,48 @@ class Modele
         return $this;
     }
 
+    public function __toString(): string
+    {
+        return $this->modele."(".$this->marque.")";// TODO: Implement __toString() method.
+    }
+
+
     public function removeRefAvion(Avion $refAvion): static
     {
         if ($this->refAvions->removeElement($refAvion)) {
             // set the owning side to null (unless already changed)
             if ($refAvion->getRefModele() === $this) {
                 $refAvion->setRefModele(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Utilisateur>
+     */
+    public function getRefUtilisateurs(): Collection
+    {
+        return $this->refUtilisateurs;
+    }
+
+    public function addRefUtilisateur(Utilisateur $refUtilisateur): static
+    {
+        if (!$this->refUtilisateurs->contains($refUtilisateur)) {
+            $this->refUtilisateurs->add($refUtilisateur);
+            $refUtilisateur->setRefModele($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRefUtilisateur(Utilisateur $refUtilisateur): static
+    {
+        if ($this->refUtilisateurs->removeElement($refUtilisateur)) {
+            // set the owning side to null (unless already changed)
+            if ($refUtilisateur->getRefModele() === $this) {
+                $refUtilisateur->setRefModele(null);
             }
         }
 
