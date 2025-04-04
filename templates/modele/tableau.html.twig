@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+Ensemble des modèles
+{% endblock %}
+
+{% block body %}
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>Modèle</th>
+            <th>Marque</th>
+            <th>Action</th>
+        </tr>
+        {% for modele in modeles %}
+            <tr>
+                <td>{{ modele.id }}</td>
+                <td>{{ modele.modele }}</td>
+                <td>{{ modele.marque }}</td>
+                <td>
+                    <a href="{{ path('app_modele_edit',{'id':modele.id}) }}">Modifier</a>
+                    <a href="{{ path('app_modele_delete',{'id':modele.id}) }}">Supprimer</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <a href="{{ path('app_modele_new') }}">Ajouter un modèle</a>
+{% endblock %}
