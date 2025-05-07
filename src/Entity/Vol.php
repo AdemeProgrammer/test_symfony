@@ -40,6 +40,14 @@ class Vol
     #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'refVol')]
     private Collection $refReservations;
 
+    #[ORM\ManyToOne(inversedBy: 'vols')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Utilisateur $ref_pilote = null;
+
+    #[ORM\ManyToOne(inversedBy: 'pilote')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Utilisateur $ref_id_pilote = null;
+
     public function __construct()
     {
         $this->refReservations = new ArrayCollection();
@@ -148,6 +156,30 @@ class Vol
                 $refReservation->setRefVol(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getRefPilote(): ?Utilisateur
+    {
+        return $this->ref_pilote;
+    }
+
+    public function setRefPilote(?Utilisateur $ref_pilote): static
+    {
+        $this->ref_pilote = $ref_pilote;
+
+        return $this;
+    }
+
+    public function getRefIdPilote(): ?Utilisateur
+    {
+        return $this->ref_id_pilote;
+    }
+
+    public function setRefIdPilote(?Utilisateur $ref_id_pilote): static
+    {
+        $this->ref_id_pilote = $ref_id_pilote;
 
         return $this;
     }

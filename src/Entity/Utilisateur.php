@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UtilisateurRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -46,6 +48,38 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToOne(inversedBy: 'refUtilisateurs')]
     private ?Modele $refModele = null;
+
+    /**
+     * @var Collection<int, Vol>
+     */
+    #[ORM\OneToMany(targetEntity: Vol::class, mappedBy: 'ref_pilote')]
+    private Collection $vols;
+
+    /**
+     * @var Collection<int, Vol>
+     */
+    #[ORM\OneToMany(targetEntity: Vol::class, mappedBy: 'ref_id_pilote')]
+    private Collection $pilote;
+
+    /**
+     * @var Collection<int, Reservation>
+     */
+    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'ref_utilisateur')]
+    private Collection $reservations;
+
+    /**
+     * @var Collection<int, Conges>
+     */
+    #[ORM\OneToMany(targetEntity: Conges::class, mappedBy: 'ref_pilote')]
+    private Collection $conges;
+
+    public function __construct()
+    {
+        $this->vols = new ArrayCollection();
+        $this->pilote = new ArrayCollection();
+        $this->reservations = new ArrayCollection();
+        $this->conges = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -178,6 +212,126 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     public function setRefModele(?Modele $refModele): static
     {
         $this->refModele = $refModele;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Vol>
+     */
+    public function getVols(): Collection
+    {
+        return $this->vols;
+    }
+
+    public function addVol(Vol $vol): static
+    {
+        if (!$this->vols->contains($vol)) {
+            $this->vols->add($vol);
+            $vol->setRefPilote($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVol(Vol $vol): static
+    {
+        if ($this->vols->removeElement($vol)) {
+            // set the owning side to null (unless already changed)
+            if ($vol->getRefPilote() === $this) {
+                $vol->setRefPilote(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Vol>
+     */
+    public function getPilote(): Collection
+    {
+        return $this->pilote;
+    }
+
+    public function addPilote(Vol $pilote): static
+    {
+        if (!$this->pilote->contains($pilote)) {
+            $this->pilote->add($pilote);
+            $pilote->setRefIdPilote($this);
+        }
+
+        return $this;
+    }
+
+    public function removePilote(Vol $pilote): static
+    {
+        if ($this->pilote->removeElement($pilote)) {
+            // set the owning side to null (unless already changed)
+            if ($pilote->getRefIdPilote() === $this) {
+                $pilote->setRefIdPilote(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reservation>
+     */
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
+    public function addReservation(Reservation $reservation): static
+    {
+        if (!$this->reservations->contains($reservation)) {
+            $this->reservations->add($reservation);
+            $reservation->setRefUtilisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReservation(Reservation $reservation): static
+    {
+        if ($this->reservations->removeElement($reservation)) {
+            // set the owning side to null (unless already changed)
+            if ($reservation->getRefUtilisateur() === $this) {
+                $reservation->setRefUtilisateur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Conges>
+     */
+    public function getConges(): Collection
+    {
+        return $this->conges;
+    }
+
+    public function addConge(Conges $conge): static
+    {
+        if (!$this->conges->contains($conge)) {
+            $this->conges->add($conge);
+            $conge->setRefPilote($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConge(Conges $conge): static
+    {
+        if ($this->conges->removeElement($conge)) {
+            // set the owning side to null (unless already changed)
+            if ($conge->getRefPilote() === $this) {
+                $conge->setRefPilote(null);
+            }
+        }
 
         return $this;
     }

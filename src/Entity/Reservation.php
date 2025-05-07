@@ -20,6 +20,10 @@ class Reservation
     #[ORM\JoinColumn(nullable: false)]
     private ?Vol $refVol = null;
 
+    #[ORM\ManyToOne(inversedBy: 'reservations')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Utilisateur $ref_utilisateur = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -45,6 +49,18 @@ class Reservation
     public function setRefVol(?Vol $refVol): static
     {
         $this->refVol = $refVol;
+
+        return $this;
+    }
+
+    public function getRefUtilisateur(): ?Utilisateur
+    {
+        return $this->ref_utilisateur;
+    }
+
+    public function setRefUtilisateur(?Utilisateur $ref_utilisateur): static
+    {
+        $this->ref_utilisateur = $ref_utilisateur;
 
         return $this;
     }

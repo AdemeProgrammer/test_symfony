@@ -2,9 +2,73 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}Bienvenue sur le site d'Aeroslam !{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
         {% block stylesheets %}
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    background-color: white;
+                    color: #333;
+                }
+
+                h1, h2 {
+                    color: #0055a5;
+                }
+
+                h3 {
+                    margin-top: 20px;
+                    font-size: 1.2em;
+                }
+
+                ul {
+                    list-style-type: none;
+                    padding: 0;
+                }
+
+                ul li {
+                    margin: 10px 0;
+                }
+
+                a {
+                    color: #0055a5;
+                    text-decoration: none;
+                    font-size: 1.1em;
+                }
+
+                a:hover {
+                    text-decoration: underline;
+                }
+
+                .banner {
+                    background-image: url('https://th.bing.com/th/id/R.99a139a8d3d7103c719dd43899499120?rik=JDuDUR%2fYwj5ptw&riu=http%3a%2f%2fwww.aeroportdesherbrooke.com%2fwp-content%2fuploads%2f2017%2f03%2fvol-1.jpg&ehk=ZcyNLViOqu6ktoqTfuq0qtpwpMQOOl7qF9LIw9QOgts%3d&risl=&pid=ImgRaw&r=0');
+                    background-size: cover;
+                    background-position: center center;
+                    height: 250px;
+                    color: white;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    text-align: center;
+                    padding: 0 20px;
+                }
+
+                .banner h1 {
+                    font-size: 3em;
+                    font-weight: bold;
+                }
+
+                .container {
+                    max-width: 800px;
+                    margin: 2em auto;
+                    padding: 2em;
+                    background: white;
+                    border-radius: 8px;
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                }
+            </style>
         {% endblock %}
 
         {% block javascripts %}
@@ -12,6 +76,19 @@
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        {% block body %}
+            <div class="banner">
+                <h1>Bienvenue sur AeroSlam</h1>
+            </div>
+        <h2>Accueil</h2>
+            <h3>Actions à réaliser :</h3>
+            <ul>
+                <li><a href="{{ path('app_avion_new') }}">Ajouter un avion</a></li>
+                <li><a href="{{ path('app_modele_new') }}">Ajouter un modèle</a></li>
+                <li><a href="{{ path('app_utilisateur_new') }}">Ajouter un utilisateur</a></li>
+                <li><a href="{{ path('app_login') }}">Changer de compte</a></li>
+                <li><a href="{{ path('app_logout') }}">Se déconnecter</a></li>
+            </ul>
+        {% endblock %}
     </body>
 </html>
